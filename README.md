@@ -1,7 +1,7 @@
 # vue-project
-<<<<<<< HEAD
+
 Website for Web Application Development 2024 using Vue.
-=======
+
 
 ## Project setup
 ```
