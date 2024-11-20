@@ -1,0 +1,86 @@
+[
+    {
+        "userId": 1,
+        "username": "John Smith",
+        "id": 1,
+        "profile_pic": "https://polybio.org/wp-content/uploads/2023/09/profile-circle-icon-2048x2048-cqe5466q-500x500.png",
+        "date": "Oct 30, 2024",
+        "img": "https://paesibaltici.org/wp-content/uploads/2019/10/tartu-estonia-cosa-vedere-1600x1066.jpg",
+        "text": "Tartu 2024"
+    },
+    {
+        "userId": 1,
+        "username": "John Smith",
+        "id": 2,
+        "profile_pic": "https://polybio.org/wp-content/uploads/2023/09/profile-circle-icon-2048x2048-cqe5466q-500x500.png",
+        "date": "Oct 30, 2024",
+        "text": "Anyone knows in which room the lab is today?"
+    },
+    {
+        "userId": 2,
+        "username": "Simona Black",
+        "id": 3,
+        "profile_pic": "https://cdn.pixabay.com/photo/2017/06/13/12/54/profile-2398783_1280.png",
+        "date": "Oct 30, 2024",
+        "text": "Today's topic is CSS, can't wait!"
+    },
+    {
+        "userId": 3,
+        "username": "Sam River",
+        "id": 4,
+        "profile_pic": "https://th.bing.com/th/id/R.5365896dbac9d0239c6cc3f5fcaf6515?rik=Jy7BDJDkzAGipw&riu=http%3a%2f%2fsyagloballaw.com%2fwp-content%2fuploads%2f2022%2f08%2fteam.png&ehk=mwHyKAHr19Relv8dYeOWoKcfYJLCirRoDfVa7%2fWSPDM%3d&risl=&pid=ImgRaw&r=0",
+        "date": "Oct 30, 2024",
+        "img": "https://ut.ee/sites/default/files/styles/facebook/public/2023-03/University%20of%20Tartu%20Delta%20Centre_Estonia_Study%20in%20Estonia_Computer%20Science_Study%20abroad.jpg?itok=OGMY0Een",
+        "text": "Delta 2024"
+    },
+    {
+        "userId": 2,
+        "username": "Simona Black",
+        "id": 5,
+        "profile_pic": "https://cdn.pixabay.com/photo/2017/06/13/12/54/profile-2398783_1280.png",
+        "date": "Oct 30, 2024",
+        "img": "https://www.roadaffair.com/wp-content/uploads/2018/02/2-Tartu-Town-Hall.jpg",
+        "text": "Tartu 2024"
+    },
+    {
+        "userId": 1,
+        "username": "John Smith",
+        "id": 6,
+        "profile_pic": "https://polybio.org/wp-content/uploads/2023/09/profile-circle-icon-2048x2048-cqe5466q-500x500.png",
+        "date": "Oct 30, 2024",
+        "text": "When is the next homework deadline?"
+    },
+    {
+        "userId": 3,
+        "username": "Sam River",
+        "id": 7,
+        "profile_pic": "https://th.bing.com/th/id/R.5365896dbac9d0239c6cc3f5fcaf6515?rik=Jy7BDJDkzAGipw&riu=http%3a%2f%2fsyagloballaw.com%2fwp-content%2fuploads%2f2022%2f08%2fteam.png&ehk=mwHyKAHr19Relv8dYeOWoKcfYJLCirRoDfVa7%2fWSPDM%3d&risl=&pid=ImgRaw&r=0",
+        "date": "Oct 30, 2024",
+        "text": "Can someone help me understand JavaScript?"
+    },
+    {
+        "userId": 2,
+        "username": "Simona Black",
+        "id": 8,
+        "profile_pic": "https://cdn.pixabay.com/photo/2017/06/13/12/54/profile-2398783_1280.png",
+        "date": "Oct 30, 2024",
+        "img": "https://www.molon.de/galleries/Estonia/Tartu/images01/18%20Tartu%20university.jpg",
+        "text": "University of Tartu"
+    },
+    {
+        "userId": 1,
+        "username": "John Smith",
+        "id": 9,
+        "profile_pic": "https://polybio.org/wp-content/uploads/2023/09/profile-circle-icon-2048x2048-cqe5466q-500x500.png",
+        "date": "Oct 30, 2024",
+        "text": "Where is the lab today?"
+    },
+    {
+        "userId": 3,
+        "username": "Sam River",
+        "id": 10,
+        "profile_pic": "https://th.bing.com/th/id/R.5365896dbac9d0239c6cc3f5fcaf6515?rik=Jy7BDJDkzAGipw&riu=http%3a%2f%2fsyagloballaw.com%2fwp-content%2fuploads%2f2022%2f08%2fteam.png&ehk=mwHyKAHr19Relv8dYeOWoKcfYJLCirRoDfVa7%2fWSPDM%3d&risl=&pid=ImgRaw&r=0",
+        "date": "Oct 30, 2024",
+        "text": "Where can I find the recording of the first lecture?"
+    }
+]
