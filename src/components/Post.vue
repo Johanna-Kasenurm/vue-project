@@ -30,12 +30,14 @@ export default {
 
 <style scoped>
 .post {
-    background-color: lightgrey;
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-bottom: 2%;
-    border-radius: 1pc;
-    padding: 0%;
+    background-color: #d3f1e4;
+    margin: 1%;
+    margin-left: 30%;
+    margin-right: 30%;
+    /*border-radius: 1pc;*/
+    padding: 0.5%;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
 }
 
 .post img {
@@ -45,10 +47,10 @@ export default {
 }
 
 .post p {
-    margin-left: 1%;
-    margin-right: 1%;
-    margin-top: 0.5%;
+    margin: 1%;
     margin-bottom: 0.5%;
+    margin-top: 3%;
+    text-align: left;
     font-size: large;
 }
 
@@ -58,7 +60,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin: 1%;
-    margin-bottom: 0%;
+    /*margin-bottom: 0%;*/
 }
 .postheader p {
     justify-content: space-between;
@@ -67,9 +69,14 @@ export default {
 .postfooter {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
+    align-content: center;
     margin: 1%;
     margin-top: 0%;
+}
+
+.postfooter img {
+    width: 5%;
 }
 
 .user {
@@ -79,21 +86,21 @@ export default {
 }
 
 .user p {
-    color: dimgray;
+    color:  #2c3e50;
 }
 
 /* img is an immediate child of user or postfooter class */
 .user > img, .postfooter > img {
     border-radius: 1pc;
     padding: 0%;
-    width: 6%;
+    width: 8%;
     min-width: 20px;
     margin-left: 0%;
 }
 
 /* Matches a p element that directly follows the user class. */
 .user + p {
-    color: dimgray;
+    color:  #2c3e50;
     word-spacing: 8px; 
     /* Keeps the text on one line */
     white-space: nowrap;  

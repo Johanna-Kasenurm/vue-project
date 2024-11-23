@@ -12,7 +12,7 @@
 <style scoped>
 nav {
   /* background-color:azure;*/
-  background-color:azure;
+  background-color:#d3f1e4;
   margin: 0%;
   margin-bottom: auto;
   width: auto;

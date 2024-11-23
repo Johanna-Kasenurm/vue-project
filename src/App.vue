@@ -33,6 +33,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: azure;
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* Make the container fill the viewport */
