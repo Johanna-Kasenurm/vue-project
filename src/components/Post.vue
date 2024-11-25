@@ -1,32 +1,42 @@
 <template>
-    <div class="post">
-        <div class ="postheader">
-            <div class="user">
-                <img :src="item.profile_pic" alt="Profile Picture">
-                <p>{{ item.username }}</p>
-            </div>
-            <p>{{ item.date }}</p>
-        </div>
-        <img v-if="item.img" :src="item.img" alt="Post Image">
-        <p>{{ item.text }}</p>
-        <div class="postfooter">
-            <img src="@/assets/like.png" alt="Like">
-            <p>Counter</p>
-        </div>
+  <div class="post">
+    <div class="post-header">
+      <div class="user">
+        <img :src="post.profile_pic" alt="Profile Picture" />
+        <p>{{ post.username }}</p>
+      </div>
+      <p>{{ post.date }}</p>
     </div>
+    <img v-if="post.img" :src="post.img" alt="Post Image" />
+    <p>{{ post.text }}</p>
+    <div class="postfooter">
+      <button @click="likePost">
+        <img src="@/assets/like.png" alt="Like" />
+      </button>
+      <p>{{ post.likes }} </p>
+    </div>
+  </div>
 </template>
-
-<script>
-export default {
-  name: 'Post',
-  props: {
-    item: {
+  
+  <script>
+  import { mapActions } from "vuex";
+  
+  export default {
+    name: "Post",
+    props: {
+      post: {
         type: Object,
-        required: true
-    }
-  }
-}
-</script>
+        required: true,
+      },
+    },
+    methods: {
+      ...mapActions(["incrementLike"]),
+      likePost() {
+        this.incrementLike(this.post.id); // Increment like count for the specific post
+      },
+    },
+  };
+  </script>
 
 <style scoped>
 .post {
@@ -69,16 +79,25 @@ export default {
 .postfooter {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-content: center;
+    justify-content: flex-start; /* Align items to the left */
+    align-items: left;
     margin: 1%;
     margin-top: 0%;
 }
 
-.postfooter img {
-    width: 5%;
+.postfooter button {
+    background: none; /* Remove default button styling */
+    border: none; /* Remove default button border */
+    padding: 0; /* Remove default button padding */
+    margin-inline-end: 90%;/* Add some space between the button and the text */
+    size: 15%;
 }
 
+.postfooter img {
+    width: 10%; /* Ensure the size matches the profile picture */
+    min-width: 40px;
+    border-radius: 50%; /* Make the image round */
+}
 .user {
     display: flex;
     flex-direction: row;

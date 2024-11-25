@@ -1,29 +1,31 @@
 <template>
   <div class="home">
+    
     <ul class="postList">
-      <li v-for="item in jsonData" :key="item.id">
-        <Post :item="item"/>
+      <li v-for="post in jsonData" :key="post.id">
+        <Post :post="post" />
       </li>
+      <button @click="resetAllLikes">Reset Likes</button> <!-- Reset button -->
     </ul>
   </div>
-  
 </template>
 
 <script>
-// @ is an alias to /src
-import Post from '@/components/Post.vue';
-import { mapState } from 'vuex';
+import Post from "@/components/Post.vue";
+import { mapState, mapActions } from "vuex";
 
 export default {
-  name: 'HomeView',
+  name: "HomeView",
+  components: { Post },
   computed: {
-    ...mapState(['jsonData'])
+    ...mapState(["jsonData"]),
   },
-  components: {
-    Post
-  }
-}
+  methods: {
+    ...mapActions(["resetAllLikes"]),
+  },
+};
 </script>
+
 
 <style scoped>
 .postList {
