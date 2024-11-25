@@ -1,6 +1,6 @@
 <template>
   <div class="post">
-    <div class="post-header">
+    <div class="postheader">
       <div class="user">
         <img :src="post.profile_pic" alt="Profile Picture" />
         <p>{{ post.username }}</p>
@@ -70,33 +70,30 @@
     justify-content: space-between;
     align-items: center;
     margin: 1%;
-    /*margin-bottom: 0%;*/
-}
-.postheader p {
-    justify-content: space-between;
+    white-space: nowrap;
 }
 
 .postfooter {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start; /* Align items to the left */
-    align-items: left;
+    justify-content: space-between;
+    align-items: center;
     margin: 1%;
-    margin-top: 0%;
+    margin-top: 1.5%;
 }
 
 .postfooter button {
     background: none; /* Remove default button styling */
     border: none; /* Remove default button border */
-    padding: 0; /* Remove default button padding */
-    margin-inline-end: 90%;/* Add some space between the button and the text */
-    size: 15%;
+    padding: 0%; /* Remove default button padding */
+    width:min-content;
 }
 
 .postfooter img {
     width: 10%; /* Ensure the size matches the profile picture */
-    min-width: 40px;
+    min-width: 30px;
     border-radius: 50%; /* Make the image round */
+    margin: 0%;
 }
 .user {
     display: flex;
@@ -109,7 +106,7 @@
 }
 
 /* img is an immediate child of user or postfooter class */
-.user > img, .postfooter > img {
+.user > img {
     border-radius: 1pc;
     padding: 0%;
     width: 8%;
@@ -126,7 +123,7 @@
 }
 
 /* When the width of the screen is 500px or less */
-@media (max-width: 500px) {
+@media (max-width: 600px) {
     .post {
         margin-left: 0.5%;
         margin-right: 0.5%;

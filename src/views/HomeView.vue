@@ -37,4 +37,18 @@ export default {
 .postList li {
   margin-bottom: 1rem; /* Optional: Add spacing between posts */
 }
+
+button {
+  background-color: #42b983;
+  margin-bottom: 1.5%;
+  border: none;
+  /*border-radius: 10%;*/
+  padding: 1%;
+  color: azure;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #2c3e50;
+}
 </style>

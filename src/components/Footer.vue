@@ -7,7 +7,8 @@
         </div>
         <div class="legal">
             <h4>Legal Specifications</h4>
-            <p></p>
+            <p>Terms of Serfice</p>
+            <p>Privacy Policy</p>
         </div>
         <div class="team">
             <h4>Team Members</h4>
