@@ -53,17 +53,19 @@
     },
   };
   </script>
+
   <style scoped>
   .signupBox {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-inline: 50px;
+    margin-top: 5%;
   }
   
   .signupinf {
-    background-color: lightgrey;
-    border-radius: 1pc;
+    background-color: #d3f1e4;
+    /*border-radius: 1pc;*/
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -84,13 +86,13 @@
     margin-top: 10px;
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #234bce;
-    color: white;
+    background-color: #42b983;
+    color: azure;
     border: none;
     cursor: pointer;
   }
   
   button:hover {
-    background-color: #208d20;
+    background-color: #2c3e50;
   }
   </style>
