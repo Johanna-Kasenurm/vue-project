@@ -1,10 +1,9 @@
 <template>
 <div class="Home">
     <div id="post-list">
-    <h1>All Posts</h1>
-     <div class="container">
-    <button   @click="Logout" class="center">Logout</button>
-    </div>
+      <div class="container">
+        <button   @click="Logout">Logout</button>
+      </div>
       <ul>
         <div class="item" v-for="post in posts" :key="post.id">
             <a class= 'singlepost' :href="'/api/apost/' + post.id">
@@ -70,6 +69,32 @@ export default {
 
 
 <style scoped>
+ul {
+  margin: 0;
+  padding:0%;
+}
+
+.item {
+  padding: 1%;
+  margin-top: 0.5%;
+  margin-bottom: 1%;
+  text-align: center;
+  background-color: lightgray;
+  margin-left: 0%;
+}
+
+button {
+  background-color: #42b983;
+  border: none;
+  margin-top: 1%;
+  margin-bottom: 0.5%;
+  /*border-radius: 10%;*/
+  padding: 1%;
+  color: azure;
+  font-weight: bold;
+}
+
+/*
 .postList {
   list-style-type: none;
   padding: 0;
@@ -77,14 +102,14 @@ export default {
 }
 
 .postList li {
-  margin-bottom: 1rem; /* Optional: Add spacing between posts */
+  margin-bottom: 1rem; // Optional: Add spacing between posts
 }
 
 button {
   background-color: #42b983;
   margin-bottom: 1.5%;
   border: none;
-  /*border-radius: 10%;*/
+  //border-radius: 10%;
   padding: 1%;
   color: azure;
   font-weight: bold;
@@ -93,4 +118,5 @@ button {
 button:hover {
   background-color: #2c3e50;
 }
+*/
 </style>
