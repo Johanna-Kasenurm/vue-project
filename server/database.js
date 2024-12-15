@@ -1,3 +1,6 @@
+require('dotenv').config(); // Load environment variables from .env file
+console.log('DB_USER:', process.env.DB_USER);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 const Pool = require('pg').Pool;
 const pool = new Pool({
     user: process.env.DB_USER,
