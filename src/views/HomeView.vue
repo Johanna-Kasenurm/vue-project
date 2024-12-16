@@ -7,9 +7,7 @@
       <ul>
         <div class="item" v-for="post in posts" :key="post.id">
             <a class= 'singlepost' :href="'/api/apost/' + post.id">
-            <span class="title"> <b>Title:</b> {{ post.title }}  </span><br />
-            <span class="body"> <b>Body:</b> {{ post.body }} </span> <br />
-            <span class="url"> <b>Url:</b> {{ post.urllink }} </span> <br />
+            <span class="body"> {{ post.body }} </span> <br />
           </a>
         </div>
       </ul>
