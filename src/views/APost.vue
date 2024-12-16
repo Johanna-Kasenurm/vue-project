@@ -2,12 +2,8 @@
     <div class="A Post">
       <div id="form">
         <h3>A Post</h3>
-        <label for="title">Title: </label>
-        <input name="type" type="text" id="title" required v-model="post.title" />
         <label for="body">Body: </label>
         <input name="body" type="text" id="body" required v-model="post.body" />
-        <label for="url">Url: </label>
-        <input name="url" type="text" id="url" required v-model="post.urllink" />
       </div>
       <div class="container">
         <button @click="updatePost" class="updatePost">Update Post</button>
@@ -24,9 +20,9 @@
       return {
         post: {
           id: "",
-          title: "",
           body: "",
-          urllink: "",
+          date: "",
+          username: "",
         },
       };
     },
