@@ -11,9 +11,17 @@ const app = express();
 
 app.use(cors());
 
+
 // The express.json() function is a built-in middleware function in Express. 
 // It parses incoming requests with JSON payloads and is based on body-parser.
 app.use(express.json());
+app.use(cookieParser());
+
+const secret = "gdgdhdbcb770785rgdzqws";
+const maxAge = 60 * 60;
+const generateJWT = (id) => {
+    return jwt.sign({ id }, secret, { expiresIn: maxAge })
+}
 
 // POST (create a new post)
 app.post('/api/posts', async(req, res) => {
