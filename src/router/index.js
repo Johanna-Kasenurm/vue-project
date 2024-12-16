@@ -4,6 +4,7 @@ import SignUpView from '@/views/SignUpView.vue';
 import APost from '@/views/APost.vue';
 import Contact from '@/views/Contact.vue';
 import LoginPage from '@/views/LoginPage.vue';
+import AddPost from '@/views/AddPost.vue';
 
 
 const routes = [
@@ -22,7 +23,7 @@ const routes = [
     path: '/addpost',
     name: 'addpost',
     meta: { requiresAuth: true }, // Only logged-in users can access AddPost
-    component: APost,
+    component: AddPost,
   },
   {
     path: '/api/apost/:id',

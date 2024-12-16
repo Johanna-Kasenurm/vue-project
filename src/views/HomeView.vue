@@ -4,12 +4,6 @@
       <div class="container">
         <!-- Logout Button -->
         <button @click="logout">Logout</button>
-
-        <!-- Add Post Button -->
-        <button @click="redirectToAddPost">Add Post</button>
-
-        <!-- Delete All Posts Button -->
-        <button @click="deleteAllPosts">Delete All</button>
       </div>
 
       <ul>
@@ -20,6 +14,14 @@
           </a>
         </div>
       </ul>
+
+      <div class="postButtons">
+        <!-- Add Post Button -->
+        <button @click="redirectToAddPost">Add Post</button>
+
+        <!-- Delete All Posts Button -->
+        <button @click="deleteAllPosts">Delete All</button>
+      </div>
     </div>
   </div>
 </template>
