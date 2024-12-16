@@ -1,116 +1,169 @@
 <template>
-    <div class="A Post">
-      <div id="form">
-        <h3>A Post</h3>
-        <label for="body">Body: </label>
-        <input name="body" type="text" id="body" required v-model="post.body" />
-      </div>
-      <div class="container">
-        <button @click="updatePost" class="updatePost">Update Post</button>
-        <button @click="deletePost" class="deletePost">Delete Post</button>
-      </div>
+  <div class="APost">
+    <div id="form">
+      <h3>A Post</h3>
+      <label for="body">Body:</label>
+      <input name="body" type="text" id="body" required v-model="post.body" />
     </div>
-  </template>
-  
-  
-  <script>
-  export default {
-    name: "APost",
-    data() {
-      return {
-        post: {
-          id: "",
-          body: "",
-          date: "",
-          username: "",
+    <div class="container">
+      <!-- Buttons for updating and deleting the post -->
+      <button @click="updatePost" class="updatePost">Update Post</button>
+      <button @click="deletePost" class="deletePost">Delete Post</button>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "APost",
+  data() {
+    return {
+      post: {
+        id: "",
+        body: "",
+        date: "",
+        username: "",
+      },
+    };
+  },
+  methods: {
+    // Fetch the specific post based on the ID
+    fetchAPost(id) {
+      console.log("Fetching the post...");
+      fetch(`http://localhost:3000/api/posts/${id}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch post");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          this.post = data;
+          console.log("Post fetched:", this.post);
+        })
+        .catch((err) => {
+          console.error(err.message);
+          alert("Error fetching the post. Please try again.");
+        });
+    },
+    // Update the current post
+    updatePost() {
+      if (!this.post.body.trim()) {
+        alert("Post body cannot be empty.");
+        return;
+      }
+      fetch(`http://localhost:3000/api/posts/${this.post.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
         },
-      };
-    },
-    methods: {
-      fetchAPost(id) {
-        console.log("Inside fetchAPost method.")
-        fetch(`http://localhost:3000/api/posts/${id}`)
-          .then((response) => response.json())
-          .then((data) => (this.post = data))
-          .catch((err) => console.log(err.message));
-      },
-      updatePost() {
-        fetch(`http://localhost:3000/api/posts/${this.post.id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(this.post),
+        body: JSON.stringify(this.post),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to update post");
+          }
+          alert("Post updated successfully!");
+          this.$router.push("/"); // Redirect to the home page
         })
-          .then((response) => {
-            console.log(response.data);
-            this.$router.push("/api/allposts");
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      },
-      deletePost() {
-        fetch(`http://localhost:3000/api/posts/${this.post.id}`, {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
+        .catch((e) => {
+          console.error(e);
+          alert("Error updating the post. Please try again.");
+        });
+    },
+    // Delete the current post
+    deletePost() {
+      if (!confirm("Are you sure you want to delete this post?")) {
+        return;
+      }
+      fetch(`http://localhost:3000/api/posts/${this.post.id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to delete post");
+          }
+          alert("Post deleted successfully!");
+          this.$router.push("/"); // Redirect to the home page
         })
-          .then((response) => {
-            console.log(response.data);
-            this.$router.push("/api/allposts");
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      },
+        .catch((e) => {
+          console.error(e);
+          alert("Error deleting the post. Please try again.");
+        });
     },
-    mounted() {
-      this.fetchAPost(this.$route.params.id);
-    },
-  };
-  </script>
-  
-  <style scoped>
-  #form {
-    max-width: 420px;
-    margin: 30px auto;
-    background: rgb(167, 154, 154);
-    text-align: left;
-    padding: 40px;
-    border-radius: 10px;
-  }
-  h3 {
-    text-align: center;
-    color: rgb(8, 110, 110);
-  }
-  label {
-    color: rgb(8, 110, 110);
-    display: inline-block;
-    margin: 25px 0 15px;
-    font-size: 0.8em;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: bold;
-  }
-  input {
-    display: block;
-    padding: 10px 6px;
-    width: 100%;
-    box-sizing: border-box;
-    border: none;
-    border-bottom: 1px solid white;
-    color: blue;
-  }
-  button {
-    background: rgb(8, 110, 110);
-    border: 0;
-    padding: 10px 20px;
-    margin-top: 20px;
-    color: white;
-    border-radius: 20px;
-  }
-  .container {
-    display: flex;
-    justify-content: center;
-  }
-  </style>
+  },
+  // Fetch the post when the component is mounted
+  mounted() {
+    const postId = this.$route.params.id; // Get post ID from route parameters
+    if (postId) {
+      this.fetchAPost(postId);
+    } else {
+      alert("No post ID provided.");
+    }
+  },
+};
+</script>
+
+<style scoped>
+/* Styling for the form container */
+#form {
+  max-width: 420px;
+  margin: 30px auto;
+  background: rgb(167, 154, 154);
+  text-align: left;
+  padding: 40px;
+  border-radius: 10px;
+}
+
+/* Styling for the title */
+h3 {
+  text-align: center;
+  color: rgb(8, 110, 110);
+}
+
+/* Styling for labels */
+label {
+  color: rgb(8, 110, 110);
+  display: inline-block;
+  margin: 25px 0 15px;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+/* Styling for input fields */
+input {
+  display: block;
+  padding: 10px 6px;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid white;
+  color: blue;
+}
+
+/* Styling for buttons */
+button {
+  background: rgb(7, 65, 65);
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* Hover effect for buttons */
+button:hover {
+  background: rgb(10, 90, 90);
+}
+
+/* Flex container for buttons */
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+</style>

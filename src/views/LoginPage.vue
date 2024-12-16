@@ -3,64 +3,58 @@
       <main>
         <div class="signupBox">
           <div class="signupinf">
-            <h2>Signup</h2>
+            <h2>Login</h2>
             <form>
               <label for="Email">Email:</label>
               <input class="logininput" type="text" placeholder="Email" v-model="email" required> <br>
               <label for="password">Password:</label>
               <input class="logininput" id="password" type="password" placeholder="Password" v-model="password" required>
             </form>
-            <button id="signupButton" type="button" @click="validatePassword">Sign up</button>
-            <p id="validationMessage" v-html="validationMessage"></p>
+            <div class="formButtons">
+              <button id="loginButton" type="button" @click="login">Log in</button>
+              <p>Or</p>
+              <router-link to="/signup"><button>Signup</button></router-link>
+            </div>
           </div>
         </div>
       </main>
     </div>
   </template>
+  
   <script>
   export default {
     data() {
       return {
         email: '',
         password: '',
-        validationMessage: '',
       };
     },
     methods: {
-      validatePassword() {
-  const conditions = [
-    { regex: /^.{8,14}$/, message: "at least 8 chars and less than 15 chars" },
-    { regex: /[A-Z]/, message: "at least one uppercase alphabet character" },
-    { regex: /[a-z].*[a-z]/, message: "at least two lowercase alphabet characters" },
-    { regex: /\d/, message: "at least one numeric value" },
-    { regex: /^[A-Z]/, message: "start with an uppercase alphabet" },
-    { regex: /_/, message: "include the character '_'" }
-  ];
+        login() {
+      const storedEmail = localStorage.getItem('userEmail');
+      const storedPassword = localStorage.getItem('userPassword');
 
-  const failedConditions = conditions.filter(condition => !condition.regex.test(this.password));
+      if (!this.email || !this.password) {
+        alert('Please fill in both fields.');
+        return;
+      }
 
-  if (!this.email || !this.password) {
-    alert("Please fill in both fields.");
-    return;
-  }
-
-  if (failedConditions.length > 0) {
-    this.validationMessage = `The password is not valid:<br>${failedConditions.map(c => `- ${c.message}`).join('<br>')}`;
-  } else {
-    // Store both email and password in localStorage
-    localStorage.setItem('userEmail', this.email);
-    localStorage.setItem('userPassword', this.password); // In a real app, hash this
-    alert('Signup successful!');
-    this.$router.push('/login');
-  }
+      if (this.email === storedEmail && this.password === storedPassword) {
+        localStorage.setItem('userLoggedIn', true); // Mark as logged in
+        alert('Login successful!');
+        this.$router.push('/'); // Redirect to Home
+      } else {
+        alert('Invalid email or password.');
+      }
 },
-
-    },
+},
   };
   </script>
+  
 
-  <style scoped>
-.signupBox {
+  
+    <style scoped>
+    .signupBox {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -116,9 +110,9 @@ button {
   background-color: #42b983;
   color: azure;
   border: none;
-  border-radius: 5px; /* Rounded corners for buttons */
+  border-radius: 5px; /* Rounded corners */
   cursor: pointer;
-  transition: background-color 0.3s; /* Smooth transition for hover effect */
+  transition: background-color 0.3s; /* Smoother transition for hover effect */
 }
 
 button:hover {
@@ -132,3 +126,6 @@ button:hover {
   gap: 10px; /* Add some space between the elements */
 }
 </style>
+    
+
+  
