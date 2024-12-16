@@ -9,7 +9,7 @@
       <ul>
         <div class="item" v-for="post in posts" :key="post.id">
           <!-- Each Post is Clickable and Redirects to a Specific Post Page -->
-          <a class="singlepost" :href="'/api/apost/' + post.id">
+          <a class="singlepost" @click="this.$router.push(`/api/apost/${post.id}`)">
             <span class="body">{{ post.body }}</span>
           </a>
         </div>
