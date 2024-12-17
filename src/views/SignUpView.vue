@@ -90,13 +90,7 @@ export default {
       .then((response) => response.json())
       .then((data) => {
       console.log(data);
-<<<<<<< HEAD
       this.$router.push("/login");
-=======
-      // this.$router.push("/login");
-      // Redirect to home page after signing up
-      this.$router.push("/");
->>>>>>> d35a9e46a95793f78fa670bb54129a458ba05c8d
       //location.assign("/");
       })
       .catch((e) => {

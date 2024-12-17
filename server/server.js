@@ -110,7 +110,7 @@ app.delete('/api/posts/:id', async(req, res) => {
 // DELETE (delete all posts)
 app.delete('/api/posts', async (req, res) => {
     try {
-        await pool.query("DELETE FROM posts");
+        await pool.query("DELETE FROM posttable");
         res.status(200).json({ message: "All posts deleted successfully" });
     } catch (err) {
         console.error(err.message);
