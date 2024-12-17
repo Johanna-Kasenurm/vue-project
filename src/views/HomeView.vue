@@ -102,14 +102,31 @@ ul {
 }
 
 .item {
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: fit-content;
+  max-width: 30%;
   padding: 1%;
-  margin: 0.5% 0;
-  text-align: center;
+  margin: 0.5% auto;
+  text-align: left;
   background-color: lightgray;
+  overflow: hidden;
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+.item:hover{
+  transition: all 0.4s ease-in-out;
+  background-color: rgb(170, 170, 170);
+  box-shadow: 0 4px 8px rgb(66, 185, 131);
+}
+.PostHeader {
+  margin-left: 80%;
 }
 
 button {
-  background-color: #42b983;
+  background-color: rgb(66, 185, 131);
   border: none;
   margin: 1%;
   padding: 10px 20px;
@@ -119,6 +136,7 @@ button {
 }
 
 button:hover {
-  background-color: #2c3e50;
+  background-color: #668db4;
 }
+
 </style>
