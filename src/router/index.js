@@ -31,14 +31,32 @@ const routes = [
   {
     path: '/addpost',
     name: 'addpost',
-    //meta: { requiresAuth: true }, // Only logged-in users can access AddPost
+    // meta: { requiresAuth: true }, // Only logged-in users can access AddPost
     component: AddPost,
+    beforeEnter: async(to, from, next) => {
+      let authResult = await auth.authenticated();
+      console.log(authResult)
+      if (!authResult) {
+          next('/login')
+      } else {
+          next();
+      }
+    }
   },
   {
     path: '/api/apost/:id',
     name: 'apost',
-    //meta: { requiresAuth: true }, // Add auth check for individual posts if needed
+    // meta: { requiresAuth: true }, // Add auth check for individual posts if needed
     component: APost,
+    beforeEnter: async(to, from, next) => {
+      let authResult = await auth.authenticated();
+      console.log(authResult)
+      if (!authResult) {
+          next('/login')
+      } else {
+          next();
+      }
+    }
   },
   {
     path: '/signup',
