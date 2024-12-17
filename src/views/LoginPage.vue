@@ -59,7 +59,14 @@ export default {
       })
       .then((response) => response.json())
       .then((data) => {
-      console.log(data); // Kontrollige, kas server saadab õigesti "success": true
+        console.log("Response from server:", data); // Kontrollige, kas server saadab õigesti "success": true
+
+        if (data.user_id) { // Check if user_id is returned
+          console.log("Redirecting to home page.")
+          this.$router.push('/'); // Redirect only if login is successful
+        } else {
+          alert(data.error || "Login failed"); // Show error message if login failed
+        }
         /*
         if (data.success) {
           // Salvestame sisselogimisoleku ja kasutaja ID
@@ -70,8 +77,8 @@ export default {
           alert(data.message || "Login failed"); // Näita serveri sõnumit
         }
         */
-        console.log("Redirecting to home page.")
-        this.$router.push('/')
+        // console.log("Redirecting to home page.")
+        // this.$router.push('/')
         })
         .catch((e) => {
           console.log(e);

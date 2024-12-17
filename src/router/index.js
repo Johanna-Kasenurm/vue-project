@@ -11,7 +11,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    meta: { requiresAuth: true }, // This route requires authentication
+    // meta: { requiresAuth: true }, // This route requires authentication
     component: () => import('../views/HomeView.vue'),
   },
   {
