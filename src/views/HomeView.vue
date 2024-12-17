@@ -122,7 +122,8 @@ ul {
   box-shadow: 0 4px 8px rgb(66, 185, 131);
 }
 .PostHeader {
-  margin-left: 80%;
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 button {
