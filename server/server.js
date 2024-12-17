@@ -10,9 +10,9 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:3001', // Veebilehe aadress
-    // methods: ['GET', 'POST'],
-    credentials: true // Kui kasutate küpsiseid
+    origin: 'http://localhost:3001', 
+    methods: ['GET', 'POST', 'DELETE'],
+    credentials: true 
   }));
 
 
@@ -108,19 +108,15 @@ app.delete('/api/posts/:id', async(req, res) => {
 }); 
 
 // DELETE (delete all posts)
-app.delete('/api/posts/', async(req, res) => {
+app.delete('/api/posts', async (req, res) => {
     try {
-        // const { id } = req.params;
-        // const post = req.body; // we do not need a body for a delete request
-        console.log("delete all posts request has arrived");
-        const deleteallposts = await pool.query(
-            "DELETE FROM posttable"
-        );
-        res.json(deleteallposts);
+        await pool.query("DELETE FROM posttable");
+        res.status(200).json({ message: "All posts deleted successfully" });
     } catch (err) {
         console.error(err.message);
+        res.status(500).json({ error: "Failed to delete posts" });
     }
-}); 
+});
 
 app.listen(port, () => {
     console.log("Server is listening to port " + port)
@@ -136,7 +132,6 @@ app.get('/auth/authenticate', async(req, res) => {
                     console.log(err.message);
                     console.log('token is not verified');
                     res.redirect('/login')
-
                 } else { // token exists and it is verified 
                     console.log('author is authinticated');
                     authenticated = true;
@@ -212,8 +207,4 @@ app.post('/auth/logout', (req, res) => {
 app.get('/auth/logout', (req, res) => {
     console.log('delete jwt request arrived');
     res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
-});
-
-app.listen(port, () => {
-    console.log("Server is listening to port " + port)
 });

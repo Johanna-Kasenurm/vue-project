@@ -6,13 +6,12 @@
           <h2>Signup</h2>
           <form>
             <label for="Username">Username:</label>
-            <input class="logininput" type="text" placeholder="Username"  v-model="username" required> <br>
+            <input class="logininput" type="text" placeholder="Username" v-model="username" required> <br>
             <label for="password">Password:</label>
             <input class="logininput" id="password" type="password" placeholder="Password" v-model="password" required>
           </form>
           <button id="signupButton" type="button" @click="signUp">Sign up</button>
-          <div v-if="errMsg">{{errMsg}} </div>
-          <!--<p id="validationMessage" v-html="validationMessage"></p>-->
+          <p id="validationMessage" v-html="validationMessage"></p>
         </div>
       </div>
     </main>
@@ -21,31 +20,14 @@
 
 <script>
 export default {
-  name: "SignUp",
-  data: function() {
+  data() {
     return {
       username: '',
       password: '',
-      // validationMessage: '',
-      errMsg: '',
+      validationMessage: '',
     };
   },
-  watch: {
-    password(value) {
-      this.password = value;
-      this.validatePassword(value);
-    }
-  },
   methods: {
-    // Easier function for validating passwords
-    validatePassword(value) {
-      if (value.length < 8 || value.length >= 16 || !/[A-Z]/.test(value) || !/[0-9]/.test(value)) {
-        this.errMsg = "Password must be at least 8 characters  and less than 16 characters, it must include a capital letter and at least one number"
-      }else{
-      this.errMsg = ''
-      }
-    },
-    /*
     validatePassword() {
       const conditions = [
         { regex: /^.{8,14}$/, message: "at least 8 chars and less than 15 chars" },
@@ -71,7 +53,6 @@ export default {
       this.validationMessage = '';
       return true;
     },
-    */
 
    signUp() {
       var data = {
@@ -90,8 +71,6 @@ export default {
       .then((response) => response.json())
       .then((data) => {
       console.log(data);
-      // this.$router.push("/login");
-      // Redirect to home page after signing up
       this.$router.push("/");
       //location.assign("/");
       })
@@ -111,8 +90,6 @@ export default {
   align-items: center;
   padding-inline: 50px;
   margin-top: 5%;
-  margin-left: 35%;
-  margin-right: 35%;
 }
 
 .signupinf {
