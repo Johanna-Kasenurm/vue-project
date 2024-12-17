@@ -29,5 +29,6 @@ h3 {
     margin-right: 35%;
     padding: 2%;
     background-color: #d3f1e4;
+    border-radius: 10px;
 }
 </style>

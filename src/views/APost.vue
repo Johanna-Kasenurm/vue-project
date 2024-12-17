@@ -110,7 +110,7 @@ export default {
 #form {
   max-width: 420px;
   margin: 30px auto;
-  background: rgb(167, 154, 154);
+  background: #d3f1e4;
   text-align: left;
   padding: 40px;
   border-radius: 10px;
@@ -141,7 +141,7 @@ input {
   box-sizing: border-box;
   border: none;
   border-bottom: 1px solid white;
-  color: blue;
+  color: rgb(8, 110, 110);
 }
 
 /* Styling for buttons */
