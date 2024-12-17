@@ -4,17 +4,19 @@
       <div class="signupBox">
         <div class="signupinf">
           <h2>Login</h2>
-          <form @submit.prevent="login">
+          <form>
             <label for="username">Username:</label>
-            <input class="logininput" type="text" placeholder="Username" v-model="username" required /> <br />
+            <input class="logininput" type="text" placeholder="username" v-model="username" required> <br>
             <label for="password">Password:</label>
-            <input class="logininput" id="password" type="password" placeholder="Password" v-model="password" required />
-            <div class="formButtons">
-              <button id="loginButton" type="submit">Log in</button>
-              <p>Or</p>
-              <router-link to="/signup"><button type="button">Signup</button></router-link>
-            </div>
+            <input class="logininput" id="password" type="password" placeholder="Password" v-model="password" required>
           </form>
+          <div class="formButtons">
+            <button id="loginButton" type="button" @click="login">Log in</button>
+            <p>Or</p>
+            <router-link to="/signup"><button>Signup</button></router-link>
+          </div>
+          <!-- Sisselogimise teade -->
+          <p v-if="loginMessage" :class="loginSuccess ? 'success' : 'error'">{{ loginMessage }}</p>
         </div>
       </div>
     </main>
@@ -28,52 +30,59 @@ export default {
     return {
       username: '',
       password: '',
+      loginMessage: '',    // Teade kuvamiseks
+      loginSuccess: false, // Kas sisselogimine õnnestus
     };
   },
   methods: {
-    // Login funktsioon
     login() {
-      // Kontrollime, kas kasutaja ja parool on sisestatud
-      if (!this.username || !this.password) {
-        alert("Please fill in both username and password.");
-        return;
-      }
-
-      var data = {
-        username: this.username,
-        password: this.password,
-      };
-
-      // Saadame päringu serverisse
       fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        credentials: 'include',
+        body: JSON.stringify({
+          username: this.username,
+          password: this.password
+        }),
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data); // Kontrollige, kas server saadab õigesti "success": true
-          if (data.success) {
-            // Salvestame sisselogimisoleku ja kasutaja ID
-            localStorage.setItem("userLoggedIn", true);
-            localStorage.setItem("userId", data.userId); // Kui server tagastab userId
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.isAuthed) {
+          this.loginSuccess = true;
+          this.loginMessage = "Login successful! Redirecting to home page...";
+          setTimeout(() => {
             this.$router.push("/"); // Suuna kodulehele
-          } else {
-            alert(data.message || "Login failed"); // Näita serveri sõnumit
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-          alert("Error occurred during login.");
-        });
+          }, 1000);
+        } else {
+          this.loginSuccess = false;
+          this.loginMessage = "Invalid username or password. Please try again.";
+        }
+      })
+      .catch((e) => {
+        console.error("An error occurred:", e);
+        this.loginSuccess = false;
+        this.loginMessage = "An error occurred during login. Please try again later.";
+      });
     },
   },
 };
 </script>
 
 <style scoped>
+/* Lisatud teade klassid */
+.success {
+  color: green;
+  margin-top: 10px;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
 .signupBox {
   display: flex;
   flex-direction: column;
@@ -89,22 +98,22 @@ export default {
   align-items: center;
   padding: 2% 40px;
   font-size: larger;
-  border-radius: 10px; /* Added rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .signupinf h2 {
-  margin-bottom: 20px; /* Added space below the heading */
+  margin-bottom: 20px;
 }
 
 .signupinf form {
-  width: 100%; /* Make form elements take full width */
+  width: 100%;
 }
 
 .signupinf label {
   display: block;
   margin-bottom: 5px;
-  font-weight: bold; /* Make labels bold */
+  font-weight: bold;
 }
 
 .signupinf input {
@@ -112,13 +121,13 @@ export default {
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 5px; /* Rounded corners for inputs */
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  border-radius: 5px;
+  box-sizing: border-box;
 }
 
 .signupinf p {
   font-size: medium;
-  margin: 10px 0; /* Added margin for better spacing */
+  margin: 10px 0;
 }
 
 textarea {
@@ -130,9 +139,9 @@ button {
   background-color: #42b983;
   color: azure;
   border: none;
-  border-radius: 5px; /* Rounded corners */
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s; /* Smoother transition for hover effect */
+  transition: background-color 0.3s;
 }
 
 button:hover {
@@ -143,6 +152,6 @@ button:hover {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px; /* Add some space between the elements */
+  gap: 10px;
 }
 </style>

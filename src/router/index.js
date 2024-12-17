@@ -5,14 +5,23 @@ import APost from '@/views/APost.vue';
 import Contact from '@/views/Contact.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import AddPost from '@/views/AddPost.vue';
+import auth from '@/auth';
 
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    meta: { requiresAuth: true }, // This route requires authentication
-    component: () => import('../views/HomeView.vue'),
+    component: HomeView,
+    beforeEnter: async(to, from, next) => {
+      let authResult = await auth.authenticated();
+      console.log(authResult)
+      if (!authResult) {
+          next('/login')
+      } else {
+          next();
+      }
+  }
   },
   {
     path: '/api/allposts',

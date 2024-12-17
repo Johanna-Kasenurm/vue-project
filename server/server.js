@@ -125,58 +125,88 @@ app.delete('/api/posts/', async(req, res) => {
 app.listen(port, () => {
     console.log("Server is listening to port " + port)
 });
-// signup a user
-app.post('/auth/signup', async(req, res) => {
+app.get('/auth/authenticate', async(req, res) => {
+    console.log('authentication request has been arrived');
+    const token = req.cookies.jwt; 
+    let authenticated = false;
     try {
-        console.log("a signup request has arrived");
-        //console.log(req.body);
-        const { username, password } = req.body;
+        if (token) { 
+            await jwt.verify(token, secret, (err) => { //token exists, now we try to verify it
+                if (err) { // not verified, redirect to login page
+                    console.log(err.message);
+                    console.log('token is not verified');
+                    res.redirect('/login')
 
-        const salt = await bcrypt.genSalt(); //  generates the salt, i.e., a random string
-        const bcryptPassword = await bcrypt.hash(password, salt) // hash the password and the salt 
-        const authUser = await pool.query( // insert the user and the hashed password into the database
-            "INSERT INTO users(username, password) values ($1, $2) RETURNING*", [username, bcryptPassword]
-        );
-        console.log(authUser.rows[0].id);
-        const token = await generateJWT(authUser.rows[0].id); // generates a JWT by taking the user id as an input (payload)
-        //console.log(token);
-        //res.cookie("isAuthorized", true, { maxAge: 1000 * 60, httpOnly: true });
-        //res.cookie('jwt', token, { maxAge: 6000000, httpOnly: true });
+                } else { // token exists and it is verified 
+                    console.log('author is authinticated');
+                    authenticated = true;
+                    res.send({ "authenticated": authenticated })
+                    
+                }
+            })
+        } else { 
+            console.log('author is not authinticated');
+            res.send({ "authenticated": authenticated });
+            res.redirect('/login')
+        }
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+// signup a user
+app.post('/auth/signup', async (req, res) => {
+    try {
+      console.log("A signup request has arrived");
+      const { username, password } = req.body;
+  
+      const bcryptPassword = await bcrypt.hash(password, await bcrypt.genSalt());
+      const authUser = await pool.query(
+        "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *",
+        [username, bcryptPassword]
+      );
+      console.log(authUser.rows[0].username);
+  
+      const token = await generateJWT(authUser.rows[0].username);
+      console.log(token);
+  
+      res.status(201)
+        .cookie('jwt', token, { maxAge: 6000000, httpOnly: true })
+        .json({ user_id: authUser.rows[0].username });
+    } catch (err) {
+      console.error(err.message);
+      res.status(400).json({ error: err.message });
+    }
+  });
+  
+
+app.post('/auth/login', async(req, res) => {
+    try {
+        console.log("a login request has arrived");
+        const { username, password } = req.body;
+        const user = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+        if (user.rows.length === 0) return res.status(401).json({ error: "User is not registered" });
+
+        //Checking if the password is correct
+        const validPassword = await bcrypt.compare(password, user.rows[0].password);
+        //console.log("validPassword:" + validPassword);
+        if (!validPassword) return res.status(401).json({ error: "Incorrect password" });
+
+        const token = await generateJWT(user.rows[0].id);
         res
             .status(201)
             .cookie('jwt', token, { maxAge: 6000000, httpOnly: true })
-            .json({ user_id: authUser.rows[0].id })
+            .json({isAuthed: true})
             .send;
-    } catch (err) {
-        console.error(err.message);
-        res.status(400).send(err.message);
+    } catch (error) {
+        res.status(401).json({ error: error.message });
     }
 });
 
-app.post('/auth/login', (req, res) => {
-    const { username, password } = req.body;
-  
-    // Oletame, et kasutaja andmed on salvestatud andmebaasis
-    db.query('SELECT * FROM users WHERE username = ?', [username], (err, result) => {
-      if (err) {
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
-      }
-      
-      if (result.length === 0) {
-        return res.status(401).json({ success: false, message: "Invalid username or password" });
-      }
-  
-      const user = result[0];
-      
-      // Võrrelge parooli (võiks kasutada bcrypt, et võrrelda parooli)
-      if (password !== user.password) { // Siin peaks olema turvalisem meetod nagu bcrypt
-        return res.status(401).json({ success: false, message: "Invalid username or password" });
-      }
-  
-      // Kui kõik on õige, tagastame õnnestumise vastuse
-      res.json({ success: true, message: "Login successful", userId: user.id });
-    });
-  });
+//logout a user
+app.post('/auth/logout', (req, res) => {
+    res.clearCookie('jwt');
+    res.send({ message: "Logged out successfully" });
+});
 
 //logout a user = deletes the jwt
 app.get('/auth/logout', (req, res) => {
