@@ -103,6 +103,21 @@ app.delete('/api/posts/:id', async(req, res) => {
     }
 }); 
 
+// DELETE (delete all posts)
+app.delete('/api/posts/', async(req, res) => {
+    try {
+        // const { id } = req.params;
+        // const post = req.body; // we do not need a body for a delete request
+        console.log("delete all posts request has arrived");
+        const deleteallposts = await pool.query(
+            "DELETE FROM posttable"
+        );
+        res.json(deleteallposts);
+    } catch (err) {
+        console.error(err.message);
+    }
+}); 
+
 app.listen(port, () => {
     console.log("Server is listening to port " + port)
 });
