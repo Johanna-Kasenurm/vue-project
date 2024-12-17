@@ -67,22 +67,21 @@ export default {
     },
 
     deleteAllPosts() {
-  if (confirm("Are you sure you want to delete all posts?")) {
-    fetch(`http://localhost:3000/api/posts/`, {
-      method: "DELETE",
-    })
-      .then((response) => {
-        if (response.ok) {
-          this.posts = [];
-          alert("All posts have been deleted.");
-        } else {
-          response.json().then(err => alert("Error: " + err.error));
-        }
-      })
-      .catch((err) => alert("Network error: " + err.message));
-  }
-},
-
+      if (confirm("Are you sure you want to delete all posts?")) {
+        fetch(`http://localhost:3000/api/posts/`, {
+          method: "DELETE",
+        })
+          .then((response) => {
+            if (response.ok) {
+              this.posts = [];
+              alert("All posts have been deleted.");
+            } else {
+              throw new Error("Failed to delete posts.");
+            }
+          })
+          .catch((err) => alert(err.message));
+      }
+    },
   },
   async mounted() {
   this.authResult = await auth.authenticated(); // Kontrollib autentimist

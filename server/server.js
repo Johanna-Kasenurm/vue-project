@@ -11,7 +11,7 @@ const app = express();
 
 app.use(cors({
     origin: 'http://localhost:3001', 
-    methods: ['GET', 'POST', 'DELETE'],
+    methods: ['GET', 'POST', 'DELETE', 'PUT'],
     credentials: true 
   }));
 
@@ -110,7 +110,7 @@ app.delete('/api/posts/:id', async(req, res) => {
 // DELETE (delete all posts)
 app.delete('/api/posts', async (req, res) => {
     try {
-        await pool.query("DELETE FROM posttable");
+        await pool.query("DELETE FROM posts");
         res.status(200).json({ message: "All posts deleted successfully" });
     } catch (err) {
         console.error(err.message);
