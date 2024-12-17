@@ -9,6 +9,7 @@
       <ul>
         <div class="item" v-for="post in posts" :key="post.id">
           <a class="singlepost" @click="this.$router.push(`/api/apost/${post.id}`)">
+            <span><div class = "PostHeader">{{ post.date }}</div></span>
             <span class="body">{{ post.body }}</span>
           </a>
         </div>
