@@ -4,15 +4,18 @@
       <div class="signupBox">
         <div class="signupinf">
           <h2>Login</h2>
-          <form @submit.prevent="login">
+          <!--<form @submit.prevent="login">-->
+          <form>
             <label for="username">Username:</label>
             <input class="logininput" type="text" placeholder="Username" v-model="username" required /> <br />
             <label for="password">Password:</label>
             <input class="logininput" id="password" type="password" placeholder="Password" v-model="password" required />
             <div class="formButtons">
-              <button id="loginButton" type="submit">Log in</button>
+              <!--<button id="loginButton" type="submit">Log in</button>-->
+              <button @click="LogIn" id="loginButton">Log in</button>
               <p>Or</p>
-              <router-link to="/signup"><button type="button">Signup</button></router-link>
+              <!--<router-link to="/signup"><button type="button">Signup</button></router-link>-->
+              <button @click='this.$router.push("/signup")'>Signup</button>
             </div>
           </form>
         </div>
@@ -24,7 +27,7 @@
 <script>
 export default {
   name: "login",
-  data() {
+  data: function() {
     return {
       username: '',
       password: '',
@@ -32,7 +35,8 @@ export default {
   },
   methods: {
     // Login funktsioon
-    login() {
+    LogIn() {
+      console.log("In LogIn function")
       // Kontrollime, kas kasutaja ja parool on sisestatud
       if (!this.username || !this.password) {
         alert("Please fill in both username and password.");
@@ -50,19 +54,24 @@ export default {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify(data),
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data); // Kontrollige, kas server saadab õigesti "success": true
-          if (data.success) {
-            // Salvestame sisselogimisoleku ja kasutaja ID
-            localStorage.setItem("userLoggedIn", true);
-            localStorage.setItem("userId", data.userId); // Kui server tagastab userId
-            this.$router.push("/"); // Suuna kodulehele
-          } else {
-            alert(data.message || "Login failed"); // Näita serveri sõnumit
-          }
+      .then((response) => response.json())
+      .then((data) => {
+      console.log(data); // Kontrollige, kas server saadab õigesti "success": true
+        /*
+        if (data.success) {
+          // Salvestame sisselogimisoleku ja kasutaja ID
+          localStorage.setItem("userLoggedIn", true);
+          localStorage.setItem("userId", data.userId); // Kui server tagastab userId
+          this.$router.push("/"); // Suuna kodulehele
+        } else {
+          alert(data.message || "Login failed"); // Näita serveri sõnumit
+        }
+        */
+        console.log("Redirecting to home page.")
+        this.$router.push('/')
         })
         .catch((e) => {
           console.log(e);

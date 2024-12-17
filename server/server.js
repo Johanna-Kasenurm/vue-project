@@ -11,7 +11,7 @@ const app = express();
 
 app.use(cors({
     origin: 'http://localhost:3001', // Veebilehe aadress
-    methods: ['GET', 'POST'],
+    // methods: ['GET', 'POST'],
     credentials: true // Kui kasutate küpsiseid
   }));
 
@@ -122,9 +122,6 @@ app.delete('/api/posts/', async(req, res) => {
     }
 }); 
 
-app.listen(port, () => {
-    console.log("Server is listening to port " + port)
-});
 // signup a user
 app.post('/auth/signup', async(req, res) => {
     try {
@@ -153,6 +150,7 @@ app.post('/auth/signup', async(req, res) => {
     }
 });
 
+/*
 app.post('/auth/login', (req, res) => {
     const { username, password } = req.body;
   
@@ -177,9 +175,40 @@ app.post('/auth/login', (req, res) => {
       res.json({ success: true, message: "Login successful", userId: user.id });
     });
   });
+*/
+
+app.post('/auth/login', async(req, res) => {
+    try {
+        console.log("a login request has arrived");
+        const { username, password } = req.body;
+        // Find a user from the datase with this username
+        const user = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+        if (user.rows.length === 0) return res.status(401).json({ error: "User is not registered" });
+        console.log("User exists")
+        // Compare the hash of valid password with the hash of entered password
+        const validPassword = await bcrypt.compare(password, user.rows[0].password);
+        if (!validPassword) return res.status(401).json({ error: "Incorrect password" });
+        console.log("Correct password.")
+
+        // If validation is okay then generate jwt
+        const token = await generateJWT(user.rows[0].id);
+        res
+            .status(201)
+            .cookie('jwt', token, { maxAge: 6000000, httpOnly: true })
+            .json({ user_id: user.rows[0].id })
+            .send;
+    } catch (error) {
+        console.log("Error:", error.message)
+        res.status(401).json({ error: error.message });
+    }
+});
 
 //logout a user = deletes the jwt
 app.get('/auth/logout', (req, res) => {
     console.log('delete jwt request arrived');
     res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
+});
+
+app.listen(port, () => {
+    console.log("Server is listening to port " + port)
 });

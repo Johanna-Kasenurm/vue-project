@@ -22,13 +22,13 @@ const routes = [
   {
     path: '/addpost',
     name: 'addpost',
-    meta: { requiresAuth: true }, // Only logged-in users can access AddPost
+    // meta: { requiresAuth: true }, // Only logged-in users can access AddPost
     component: AddPost,
   },
   {
     path: '/api/apost/:id',
     name: 'apost',
-    meta: { requiresAuth: true }, // Add auth check for individual posts if needed
+    // meta: { requiresAuth: true }, // Add auth check for individual posts if needed
     component: APost,
   },
   {
@@ -58,6 +58,8 @@ const router = createRouter({
   routes,
 });
 
+
+/*
 // Global navigation guard
 router.beforeEach((to, from, next) => {
   const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true'; // Check if user is logged in
@@ -69,5 +71,6 @@ router.beforeEach((to, from, next) => {
     next(); // Proceed to the route
   }
 });
+*/
 
 export default router;
