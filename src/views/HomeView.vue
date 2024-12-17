@@ -111,10 +111,11 @@ ul {
   padding: 1%;
   margin: 0.5% auto;
   text-align: left;
-  background-color: lightgray;
+  background-color: #d3f1e4;
   overflow: hidden;
   word-wrap: break-word;
   line-height: 1.5;
+  border-radius: 10px;
 }
 .item:hover{
   transition: all 0.4s ease-in-out;
@@ -123,7 +124,9 @@ ul {
 }
 .PostHeader {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
+  justify-content: flex-end;
+  /*align-items: flex-end;*/
 }
 
 button {
@@ -134,6 +137,7 @@ button {
   color: white;
   font-weight: bold;
   cursor: pointer;
+  border-radius: 10px;
 }
 
 button:hover {

@@ -47,7 +47,7 @@
       },
       formatDate(date) {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return date.toLocaleDateString('et-EE', options);
+        return date.toLocaleDateString('en-EE', options);
       },
     },
   };
