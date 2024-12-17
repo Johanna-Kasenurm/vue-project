@@ -71,7 +71,7 @@ export default {
       .then((response) => response.json())
       .then((data) => {
       console.log(data);
-      this.$router.push("/");
+      this.$router.push("/login");
       //location.assign("/");
       })
       .catch((e) => {

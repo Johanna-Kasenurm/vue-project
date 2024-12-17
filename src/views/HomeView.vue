@@ -47,10 +47,20 @@ export default {
     },
 
     logout() {
-      localStorage.removeItem("userLoggedIn");
+  fetch("http://localhost:3000/auth/logout", {
+    method: "POST",
+    credentials: "include",
+  })
+    .then(() => {
+      auth.user.authenticated = false; // Muudame kasutaja staatuse false-ks
       alert("Logged out successfully!");
       this.$router.push("/login");
-    },
+    })
+    .catch((err) => {
+      console.error("Logout failed:", err.message);
+      alert("Logout failed. Please try again.");
+    });
+},
 
     redirectToAddPost() {
       this.$router.push("/addpost");
@@ -75,14 +85,13 @@ export default {
 
   },
   async mounted() {
-    // Kontrollime, kas kasutaja on autentitud
-    this.authResult = await auth.authenticated();
-    if (this.authResult) {
-      this.fetchPosts();
-    } else {
-      this.$router.push("/login"); // Kui kasutaja ei ole autentitud, suuname sisselogimislehele
-    }
-  },
+  this.authResult = await auth.authenticated(); // Kontrollib autentimist
+  if (this.authResult) {
+    this.fetchPosts(); // Kui kasutaja on autentitud, lae postitused
+  } else {
+    this.$router.push("/login"); // Kui ei ole, suuna login lehele
+  }
+}
 };
 </script>
 
