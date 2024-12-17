@@ -9,7 +9,11 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3001', // Veebilehe aadress
+    methods: ['GET', 'POST'],
+    credentials: true // Kui kasutate küpsiseid
+  }));
 
 
 // The express.json() function is a built-in middleware function in Express. 
@@ -120,4 +124,62 @@ app.delete('/api/posts/', async(req, res) => {
 
 app.listen(port, () => {
     console.log("Server is listening to port " + port)
+});
+// signup a user
+app.post('/auth/signup', async(req, res) => {
+    try {
+        console.log("a signup request has arrived");
+        //console.log(req.body);
+        const { username, password } = req.body;
+
+        const salt = await bcrypt.genSalt(); //  generates the salt, i.e., a random string
+        const bcryptPassword = await bcrypt.hash(password, salt) // hash the password and the salt 
+        const authUser = await pool.query( // insert the user and the hashed password into the database
+            "INSERT INTO users(username, password) values ($1, $2) RETURNING*", [username, bcryptPassword]
+        );
+        console.log(authUser.rows[0].id);
+        const token = await generateJWT(authUser.rows[0].id); // generates a JWT by taking the user id as an input (payload)
+        //console.log(token);
+        //res.cookie("isAuthorized", true, { maxAge: 1000 * 60, httpOnly: true });
+        //res.cookie('jwt', token, { maxAge: 6000000, httpOnly: true });
+        res
+            .status(201)
+            .cookie('jwt', token, { maxAge: 6000000, httpOnly: true })
+            .json({ user_id: authUser.rows[0].id })
+            .send;
+    } catch (err) {
+        console.error(err.message);
+        res.status(400).send(err.message);
+    }
+});
+
+app.post('/auth/login', (req, res) => {
+    const { username, password } = req.body;
+  
+    // Oletame, et kasutaja andmed on salvestatud andmebaasis
+    db.query('SELECT * FROM users WHERE username = ?', [username], (err, result) => {
+      if (err) {
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+      }
+      
+      if (result.length === 0) {
+        return res.status(401).json({ success: false, message: "Invalid username or password" });
+      }
+  
+      const user = result[0];
+      
+      // Võrrelge parooli (võiks kasutada bcrypt, et võrrelda parooli)
+      if (password !== user.password) { // Siin peaks olema turvalisem meetod nagu bcrypt
+        return res.status(401).json({ success: false, message: "Invalid username or password" });
+      }
+  
+      // Kui kõik on õige, tagastame õnnestumise vastuse
+      res.json({ success: true, message: "Login successful", userId: user.id });
+    });
+  });
+
+//logout a user = deletes the jwt
+app.get('/auth/logout', (req, res) => {
+    console.log('delete jwt request arrived');
+    res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
 });

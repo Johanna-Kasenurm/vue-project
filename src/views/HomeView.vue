@@ -1,5 +1,5 @@
 <template>
-  <div class="Home">
+  <div class="Home" v-if="authResult">
     <div id="post-list">
       <div class="container">
         <!-- Logout Button -->
@@ -8,7 +8,6 @@
 
       <ul>
         <div class="item" v-for="post in posts" :key="post.id">
-          <!-- Each Post is Clickable and Redirects to a Specific Post Page -->
           <a class="singlepost" @click="this.$router.push(`/api/apost/${post.id}`)">
             <span class="body">{{ post.body }}</span>
           </a>
@@ -16,56 +15,55 @@
       </ul>
 
       <div class="postButtons">
-        <!-- Add Post Button -->
         <button @click="redirectToAddPost">Add Post</button>
-
-        <!-- Delete All Posts Button -->
         <button @click="deleteAllPosts">Delete All</button>
       </div>
     </div>
   </div>
+  <div v-else>
+    <p>You must be logged in to view this page.</p>
+  </div>
 </template>
 
 <script>
+import auth from '@/auth'; // Impordi autentimise logika
+
 export default {
   name: "HomeView",
   data() {
     return {
-      posts: [], // Stores all posts fetched from the database
+      posts: [],
+      authResult: false, // Algseis: kasutaja ei ole autentitud
     };
   },
   methods: {
-    // Fetch all posts from the database
     fetchPosts() {
-      fetch(`http://localhost:3000/api/posts/`) // Replace with your actual backend URL
+      fetch(`http://localhost:3000/api/posts/`)
         .then((response) => response.json())
         .then((data) => {
-          this.posts = data; // Update posts array
+          this.posts = data;
         })
         .catch((err) => console.error(err.message));
     },
 
-    // Logout Functionality
     logout() {
-      localStorage.removeItem("userLoggedIn"); // Remove login state
+      localStorage.removeItem("userLoggedIn");
       alert("Logged out successfully!");
-      this.$router.push("/login"); // Redirect to login page
+      this.$router.push("/login");
     },
 
-    // Redirect to the Add Post page
     redirectToAddPost() {
-      this.$router.push("/addpost"); // Ensure you create an "AddPost" page/component
+      this.$router.push("/addpost");
     },
 
-    // Delete All Posts from the Database
     deleteAllPosts() {
       if (confirm("Are you sure you want to delete all posts?")) {
         fetch(`http://localhost:3000/api/posts/`, {
-          method: "DELETE", // Delete all posts via API
+          method: "DELETE",
         })
           .then((response) => {
             if (response.ok) {
-              this.posts = []; // Clear the local posts array
+              this.posts = [];
               alert("All posts have been deleted.");
             } else {
               throw new Error("Failed to delete posts.");
@@ -75,8 +73,14 @@ export default {
       }
     },
   },
-  mounted() {
-    this.fetchPosts(); // Automatically fetch posts on component load
+  async mounted() {
+    // Kontrollime, kas kasutaja on autentitud
+    this.authResult = await auth.authenticated();
+    if (this.authResult) {
+      this.fetchPosts();
+    } else {
+      this.$router.push("/login"); // Kui kasutaja ei ole autentitud, suuname sisselogimislehele
+    }
   },
 };
 </script>

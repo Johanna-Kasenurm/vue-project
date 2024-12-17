@@ -1,60 +1,80 @@
 <template>
-    <div>
-      <main>
-        <div class="signupBox">
-          <div class="signupinf">
-            <h2>Login</h2>
-            <form>
-              <label for="Email">Email:</label>
-              <input class="logininput" type="text" placeholder="Email" v-model="email" required> <br>
-              <label for="password">Password:</label>
-              <input class="logininput" id="password" type="password" placeholder="Password" v-model="password" required>
-            </form>
+  <div>
+    <main>
+      <div class="signupBox">
+        <div class="signupinf">
+          <h2>Login</h2>
+          <form @submit.prevent="login">
+            <label for="username">Username:</label>
+            <input class="logininput" type="text" placeholder="Username" v-model="username" required /> <br />
+            <label for="password">Password:</label>
+            <input class="logininput" id="password" type="password" placeholder="Password" v-model="password" required />
             <div class="formButtons">
-              <button id="loginButton" type="button" @click="login">Log in</button>
+              <button id="loginButton" type="submit">Log in</button>
               <p>Or</p>
-              <router-link to="/signup"><button>Signup</button></router-link>
+              <router-link to="/signup"><button type="button">Signup</button></router-link>
             </div>
-          </div>
+          </form>
         </div>
-      </main>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        email: '',
-        password: '',
-      };
-    },
-    methods: {
-        login() {
-      const storedEmail = localStorage.getItem('userEmail');
-      const storedPassword = localStorage.getItem('userPassword');
+      </div>
+    </main>
+  </div>
+</template>
 
-      if (!this.email || !this.password) {
-        alert('Please fill in both fields.');
+<script>
+export default {
+  name: "login",
+  data() {
+    return {
+      username: '',
+      password: '',
+    };
+  },
+  methods: {
+    // Login funktsioon
+    login() {
+      // Kontrollime, kas kasutaja ja parool on sisestatud
+      if (!this.username || !this.password) {
+        alert("Please fill in both username and password.");
         return;
       }
 
-      if (this.email === storedEmail && this.password === storedPassword) {
-        localStorage.setItem('userLoggedIn', true); // Mark as logged in
-        alert('Login successful!');
-        this.$router.push('/'); // Redirect to Home
-      } else {
-        alert('Invalid email or password.');
-      }
-},
-},
-  };
-  </script>
-  
+      var data = {
+        username: this.username,
+        password: this.password,
+      };
 
-  
-    <style scoped>
-    .signupBox {
+      // Saadame päringu serverisse
+      fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data); // Kontrollige, kas server saadab õigesti "success": true
+          if (data.success) {
+            // Salvestame sisselogimisoleku ja kasutaja ID
+            localStorage.setItem("userLoggedIn", true);
+            localStorage.setItem("userId", data.userId); // Kui server tagastab userId
+            this.$router.push("/"); // Suuna kodulehele
+          } else {
+            alert(data.message || "Login failed"); // Näita serveri sõnumit
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          alert("Error occurred during login.");
+        });
+    },
+  },
+};
+</script>
+
+<style scoped>
+.signupBox {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -126,6 +146,3 @@ button:hover {
   gap: 10px; /* Add some space between the elements */
 }
 </style>
-    
-
-  

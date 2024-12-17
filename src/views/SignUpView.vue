@@ -1,65 +1,89 @@
 <template>
-    <div>
-      <main>
-        <div class="signupBox">
-          <div class="signupinf">
-            <h2>Signup</h2>
-            <form>
-              <label for="Email">Email:</label>
-              <input class="logininput" type="text" placeholder="Email" v-model="email" required> <br>
-              <label for="password">Password:</label>
-              <input class="logininput" id="password" type="password" placeholder="Password" v-model="password" required>
-            </form>
-            <button id="signupButton" type="button" @click="validatePassword">Sign up</button>
-            <p id="validationMessage" v-html="validationMessage"></p>
-          </div>
+  <div>
+    <main>
+      <div class="signupBox">
+        <div class="signupinf">
+          <h2>Signup</h2>
+          <form>
+            <label for="Username">Username:</label>
+            <input class="logininput" type="text" placeholder="Username" v-model="username" required> <br>
+            <label for="password">Password:</label>
+            <input class="logininput" id="password" type="password" placeholder="Password" v-model="password" required>
+          </form>
+          <button id="signupButton" type="button" @click="signUp">Sign up</button>
+          <p id="validationMessage" v-html="validationMessage"></p>
         </div>
-      </main>
-    </div>
-  </template>
-  <script>
-  export default {
-    data() {
-      return {
-        email: '',
-        password: '',
-        validationMessage: '',
+      </div>
+    </main>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      validationMessage: '',
+    };
+  },
+  methods: {
+    validatePassword() {
+      const conditions = [
+        { regex: /^.{8,14}$/, message: "at least 8 chars and less than 15 chars" },
+        { regex: /[A-Z]/, message: "at least one uppercase alphabet character" },
+        { regex: /[a-z].*[a-z]/, message: "at least two lowercase alphabet characters" },
+        { regex: /\d/, message: "at least one numeric value" },
+        { regex: /^[A-Z]/, message: "start with an uppercase alphabet" },
+        { regex: /_/, message: "include the character '_'" }
+      ];
+
+      const failedConditions = conditions.filter(condition => !condition.regex.test(this.password));
+
+      if (!this.username || !this.password) {
+        alert("Please fill in both fields.");
+        return false;
+      }
+
+      if (failedConditions.length > 0) {
+        this.validationMessage = `The password is not valid:<br>${failedConditions.map(c => `- ${c.message}`).join('<br>')}`;
+        return false;
+      }
+
+      this.validationMessage = '';
+      return true;
+    },
+
+   signUp() {
+      var data = {
+        username: this.username,
+        password: this.password
       };
+      // using Fetch - post method - send an HTTP post request to the specified URI with the defined body
+      fetch("http://localhost:3000/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+          credentials: 'include', //  Don't forget to specify this if you need cookies
+          body: JSON.stringify(data),
+      })
+      .then((response) => response.json())
+      .then((data) => {
+      console.log(data);
+      this.$router.push("/login");
+      //location.assign("/");
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log("error");
+      });
     },
-    methods: {
-      validatePassword() {
-  const conditions = [
-    { regex: /^.{8,14}$/, message: "at least 8 chars and less than 15 chars" },
-    { regex: /[A-Z]/, message: "at least one uppercase alphabet character" },
-    { regex: /[a-z].*[a-z]/, message: "at least two lowercase alphabet characters" },
-    { regex: /\d/, message: "at least one numeric value" },
-    { regex: /^[A-Z]/, message: "start with an uppercase alphabet" },
-    { regex: /_/, message: "include the character '_'" }
-  ];
-
-  const failedConditions = conditions.filter(condition => !condition.regex.test(this.password));
-
-  if (!this.email || !this.password) {
-    alert("Please fill in both fields.");
-    return;
+  }, 
   }
+</script>
 
-  if (failedConditions.length > 0) {
-    this.validationMessage = `The password is not valid:<br>${failedConditions.map(c => `- ${c.message}`).join('<br>')}`;
-  } else {
-    // Store both email and password in localStorage
-    localStorage.setItem('userEmail', this.email);
-    localStorage.setItem('userPassword', this.password); // In a real app, hash this
-    alert('Signup successful!');
-    this.$router.push('/login');
-  }
-},
-
-    },
-  };
-  </script>
-
-  <style scoped>
+<style scoped>
 .signupBox {
   display: flex;
   flex-direction: column;
@@ -75,22 +99,22 @@
   align-items: center;
   padding: 2% 40px;
   font-size: larger;
-  border-radius: 10px; /* Added rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .signupinf h2 {
-  margin-bottom: 20px; /* Added space below the heading */
+  margin-bottom: 20px;
 }
 
 .signupinf form {
-  width: 100%; /* Make form elements take full width */
+  width: 100%;
 }
 
 .signupinf label {
   display: block;
   margin-bottom: 5px;
-  font-weight: bold; /* Make labels bold */
+  font-weight: bold;
 }
 
 .signupinf input {
@@ -98,13 +122,13 @@
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 5px; /* Rounded corners for inputs */
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  border-radius: 5px;
+  box-sizing: border-box;
 }
 
 .signupinf p {
   font-size: medium;
-  margin: 10px 0; /* Added margin for better spacing */
+  margin: 10px 0;
 }
 
 textarea {
@@ -116,9 +140,9 @@ button {
   background-color: #42b983;
   color: azure;
   border: none;
-  border-radius: 5px; /* Rounded corners for buttons */
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s; /* Smooth transition for hover effect */
+  transition: background-color 0.3s;
 }
 
 button:hover {
@@ -129,6 +153,6 @@ button:hover {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px; /* Add some space between the elements */
+  gap: 10px;
 }
 </style>
