@@ -11,7 +11,7 @@ const app = express();
 
 app.use(cors({
     origin: 'http://localhost:3001', // Veebilehe aadress
-    methods: ['GET', 'POST'],
+    // methods: ['GET', 'POST'],
     credentials: true // Kui kasutate küpsiseid
   }));
 
@@ -212,4 +212,8 @@ app.post('/auth/logout', (req, res) => {
 app.get('/auth/logout', (req, res) => {
     console.log('delete jwt request arrived');
     res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
+});
+
+app.listen(port, () => {
+    console.log("Server is listening to port " + port)
 });
